@@ -1,0 +1,23 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: arvados-sso
+  labels:
+    app: {{ template "arvados.name" . }}
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: LoadBalancer
+  loadBalancerIP: "8.8.8.8"
+  ports:
+  - name: http
+    port: 3002
+    targetPort: 3002
+    protocol: TCP
+  selector:
+    app: arvados-sso

@@ -1,0 +1,37 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "arvados-postgres"
+  labels:
+    app: arvados-postgres
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arvados-postgres
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-postgres
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "postgres:9.5"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: postgres-configmap
+              mountPath: /docker-entrypoint-initdb.d/create_dbs.sh
+              subPath: create_dbs.sh
+      volumes:
+        - name: postgres-configmap
+          configMap:
+            name: postgres-configmap

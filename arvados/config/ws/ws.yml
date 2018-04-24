@@ -1,0 +1,13 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+Client:
+  APIHost: arvados-ws:443
+Listen: ":9003"
+Postgres:
+  dbname: arvados_production
+  host: arvados-postgres
+  password: pw
+  user: arvados
+  sslmode: disable

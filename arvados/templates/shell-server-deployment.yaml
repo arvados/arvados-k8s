@@ -1,0 +1,65 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "arvados-shell-server"
+  labels:
+    app: arvados-shell-server
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arvados-shell-server
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-shell-server
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: arvados-shell-server
+          image: "cure/arvados-shell-server-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            # TODO: the apt-get update should be run in the Dockerfile
+            - "apt-get update && /usr/local/bin/bootstrap.sh python-arvados-python-client=1.1.3.20180404223512* gem:arvados-cli=1.1.4.20180412190507 gem:arvados-login-sync=1.1.4.20180412190507 crunchrunner=1.1.3.20180403215323* python-arvados-fuse=1.1.3.20180404223512* && install /init-scripts-staging/* /etc/my_init.d && /sbin/my_init"
+          env:
+            - name: RAILS_ENV
+              value: "production"
+            - name: ARVADOS_API_HOST
+              value: "8.8.8.8:444"
+            - name : ARVADOS_API_HOST_INSECURE
+              value: "true"
+            - name : ARVADOS_API_TOKEN
+              value: "thisisnotaverygoodsuperusersecretstring00000000000"
+          volumeMounts:
+            - name: shell-server-configmap
+              mountPath: /init-scripts-staging/99-init-keep.sh
+              subPath: 99-init-keep.sh
+            - name: shell-server-configmap
+              mountPath: /init-scripts-staging/99-trust-cert.sh
+              subPath: 99-trust-cert.sh
+            - name: ssl-configmap
+              mountPath: /self-signed-cert.pem
+              subPath: cert
+            - mountPath: /var/run/docker.sock
+              name: docker
+      volumes:
+        - name: shell-server-configmap
+          configMap:
+            name: arvados-shell-server-configmap
+        - name: ssl-configmap
+          configMap:
+            name: ssl-configmap
+        - name: docker
+          hostPath:
+            path: /var/run/docker.sock

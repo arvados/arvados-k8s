@@ -1,0 +1,65 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "arvados-api-server"
+  labels:
+    app: arvados-api-server
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arvados-api-server
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-api-server
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: arvados-api-server
+          image: "cure/arvados-rails-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "install /init-scripts/*.sh /etc/my_init.d && /usr/local/bin/bootstrap.sh arvados-api-server=1.1.3.20180405021932* && cd /var/www/arvados-api/current && exec /sbin/my_init"
+          env:
+            - name: RAILS_ENV
+              value: "production"
+          volumeMounts:
+            - name: api-server-configmap
+              mountPath: /init-scripts/90-init-db.sh
+              subPath: 90-init-db.sh
+            - name: api-server-configmap
+              mountPath: /etc/arvados/api/database.yml
+              subPath: database.yml
+            - name: api-server-configmap
+              mountPath: /etc/arvados/api/application.yml
+              subPath: application.yml
+            - name: api-server-configmap
+              mountPath: /create-workbench-api-client.rb
+              subPath: create-workbench-api-client.rb
+            - name: api-server-configmap
+              mountPath: /etc/nginx/sites-enabled/api-server.conf
+              subPath: nginx.conf
+            - name: ssl-configmap
+              mountPath: /etc/ssl/certs/api-server.pem
+              subPath: cert
+            - name: ssl-configmap
+              mountPath: /etc/ssl/private/api-server.key
+              subPath: key
+      volumes:
+        - name: api-server-configmap
+          configMap:
+            name: arvados-api-server-configmap
+        - name: ssl-configmap
+          configMap:
+            name: ssl-configmap

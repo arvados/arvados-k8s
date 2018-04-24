@@ -1,0 +1,56 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "arvados-workbench"
+  labels:
+    app: arvados-workbench
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arvados-workbench
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-workbench
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: arvados-workbench
+          image: "cure/arvados-rails-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "/usr/local/bin/bootstrap.sh arvados-workbench=1.1.3.20180323182125* && exec /sbin/my_init"
+          env:
+            - name: RAILS_ENV
+              value: "production"
+          volumeMounts:
+            - name: workbench-configmap
+              mountPath: /etc/arvados/workbench/application.yml
+              subPath: application.yml
+            - name: workbench-configmap
+              mountPath: /etc/nginx/sites-enabled/workbench.conf
+              subPath: nginx.conf
+            - name: ssl-configmap
+              mountPath: /etc/ssl/certs/workbench.pem
+              subPath: cert
+            - name: ssl-configmap
+              mountPath: /etc/ssl/private/workbench.key
+              subPath: key
+      volumes:
+        - name: workbench-configmap
+          configMap:
+            name: arvados-workbench-configmap
+        - name: ssl-configmap
+          configMap:
+            name: ssl-configmap

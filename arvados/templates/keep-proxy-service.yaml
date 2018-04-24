@@ -1,0 +1,21 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: arvados-keep-proxy
+  labels:
+    app: {{ template "arvados.name" . }}
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+  - name: http
+    port: 25107
+    targetPort: 25107
+    protocol: TCP
+  selector:
+    app: arvados-keep-proxy

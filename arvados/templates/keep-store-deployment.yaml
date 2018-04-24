@@ -1,0 +1,43 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: "arvados-keep-store"
+  labels:
+    app: arvados-keep-store
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 2
+  serviceName: arvados-keep-store
+  selector:
+    matchLabels:
+      app: arvados-keep-store
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-keep-store
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: arvados-keep-store
+          image: "cure/arvados-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            # TODO: the apt-get update should be run in the Dockerfile
+            - "apt-get update && mkdir /keepdata && /usr/local/bin/bootstrap.sh keepstore=1.1.3.20180404192345* && GOGC=10 keepstore -enforce-permissions=true -blob-signing-key-file=/etc/keepstore/blob-signing.key -max-buffers=100 -serialize=true -never-delete=false -volume=/keepdata"
+          volumeMounts:
+            - name: keep-store-configmap
+              mountPath: /etc/keepstore/blob-signing.key
+              subPath: blob-signing.key
+      volumes:
+        - name: keep-store-configmap
+          configMap:
+            name: arvados-keep-store-configmap

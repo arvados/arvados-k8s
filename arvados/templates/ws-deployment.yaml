@@ -1,0 +1,41 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "arvados-ws"
+  labels:
+    app: arvados-ws
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arvados-ws
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-ws
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: arvados-ws
+          image: "cure/arvados-rails-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "/usr/local/bin/bootstrap.sh arvados-ws=1.1.3.20180403215323* && arvados-ws"
+          volumeMounts:
+            - name: ws-configmap
+              mountPath: /etc/arvados/ws/ws.yml
+              subPath: ws.yml
+      volumes:
+        - name: ws-configmap
+          configMap:
+            name: arvados-ws-configmap

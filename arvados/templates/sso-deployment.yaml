@@ -1,0 +1,59 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: "arvados-sso"
+  labels:
+    app: arvados-sso
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arvados-sso
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-sso
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "cure/arvados-rails-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "install /init-scripts/*.sh /etc/my_init.d && /usr/local/bin/bootstrap.sh arvados-sso-server=0.1.20171122141118.ba584a7* && cd /var/www/arvados-sso/current && exec /sbin/my_init"
+          env:
+            - name: RAILS_ENV
+              value: "production"
+          volumeMounts:
+            - name: sso-configmap
+              mountPath: /etc/arvados/sso/database.yml
+              subPath: database.yml
+            - name: sso-configmap
+              mountPath: /etc/arvados/sso/application.yml
+              subPath: application.yml
+            - name: sso-configmap
+              mountPath: /etc/nginx/sites-enabled/sso.conf
+              subPath: nginx.conf
+            - name: sso-configmap
+              mountPath: /init-client.rb
+              subPath: init-client.rb
+            - name: sso-configmap
+              mountPath: /init-scripts/90-init-db.sh
+              subPath: 90-init-db.sh
+            - name: sso-configmap
+              mountPath: /init-scripts/92-init-client.sh
+              subPath: 92-init-client.sh
+      volumes:
+        - name: sso-configmap
+          configMap:
+            name: arvados-sso-configmap
