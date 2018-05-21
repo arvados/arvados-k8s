@@ -39,7 +39,7 @@ spec:
             - name : ARVADOS_API_HOST_INSECURE
               value: "true"
             - name : ARVADOS_API_TOKEN
-              value: "thisisnotaverygoodsuperusersecretstring00000000000"
+              value: "{{ .Values.anonymousUserSecret }}"
           volumeMounts:
             - name: shell-server-configmap
               mountPath: /init-scripts-staging/99-init-keep.sh

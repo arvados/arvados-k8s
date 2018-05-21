@@ -22,9 +22,9 @@ prepare_database() {
   if [[ -f "/create-workbench-api-client.rb" ]]; then
     # This is the API server
     cd /var/www/arvados-api/current
-    bundle exec script/create_superuser_token.rb thisisnotaverygoodsuperusersecretstring00000000000
+    bundle exec script/create_superuser_token.rb {{ .Values.superUserSecret }}
     cd script
-    bundle exec get_anonymous_user_token.rb -t thisisnotaverygoodanonymoussecretstring00000000000 || true
+    bundle exec get_anonymous_user_token.rb -t {{ .Values.anonymousUserSecret }} || true
     bundle exec rails runner /create-workbench-api-client.rb
   fi
 

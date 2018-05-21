@@ -12,4 +12,4 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-{{ (.Files.Glob "config/sso/*").AsConfig | indent 2 }}
+{{ (tpl (.Files.Glob "config/sso/*").AsConfig . ) | indent 2 }}

@@ -52,6 +52,11 @@ affinity: {}
 # Must be set to a valid IP address, e.g. by using --set when invoking helm
 externalIP: ~
 
+# A super user token
+superUserSecret: "thisisnotaverygoodsuperusersecretstring00000000000"
+# An anonymous user token
+anonymousUserSecret: "thisisnotaverygoodanonymoussecretstring00000000000"
+
 # The package versions for this Arvados cluster. Also see
 #
 #   curl http://versions.arvados.org/v1/commit/ | jq .

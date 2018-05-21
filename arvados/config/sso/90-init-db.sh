@@ -19,15 +19,6 @@ prepare_database() {
     echo "Warning: Database is not ready to set up." >&2
     exit 1
   fi
-
-  if [[ -f "/create-workbench-api-client.rb" ]]; then
-    # This is the API server
-    cd /var/www/arvados-api/current
-    bundle exec script/create_superuser_token.rb thisisnotaverygoodsuperusersecretstring00000000000
-    cd script
-    bundle exec get_anonymous_user_token.rb -t thisisnotaverygoodanonymoussecretstring00000000000 || true
-    bundle exec rails runner /create-workbench-api-client.rb
-  fi
 }
 
 prepare_database "db:schema:load"
