@@ -32,11 +32,11 @@ production:
   secret_token: 69f1fd650250e925cb1d9428094add92
 
   # You probably also want to point to your API server.
-  arvados_login_base: https://8.8.8.8:444/login
-  arvados_v1_base: https://8.8.8.8:444/arvados/v1
+  arvados_login_base: https://{{ .Values.externalIP }}:444/login
+  arvados_v1_base: https://{{ .Values.externalIP }}:444/arvados/v1
   arvados_insecure_https: true # TODO: Change this to false.
 
   # You need to configure at least one of these:
-  keep_web_url: https://8.8.8.8:9002/c=%{uuid_or_pdh}
-  keep_web_download_url: https://8.8.8.8:9002/c=%{uuid_or_pdh}
+  keep_web_url: https://{{ .Values.externalIP }}:9002/c=%{uuid_or_pdh}
+  keep_web_download_url: https://{{ .Values.externalIP }}:9002/c=%{uuid_or_pdh}
   trust_all_content: true # TODO: remove this.

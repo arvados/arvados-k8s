@@ -42,7 +42,7 @@ common:
   # sso-provider).
   sso_app_secret: app_secret
   sso_app_id: arvados-server
-  sso_provider_url: http://8.8.8.8:3002
+  sso_provider_url: http://{{ .Values.externalIP }}:3002
 
   # If this is not false, HTML requests at the API server's root URL
   # are redirected to this location, and it is provided in the text of
@@ -60,7 +60,7 @@ common:
   #
   # Example:
   #websocket_address: wss://ws.zzzzz.arvadosapi.com/websocket
-  websocket_address: wss://8.8.8.8:9003/websocket
+  websocket_address: wss://{{ .Values.externalIP }}:9003/websocket
 
   # Maximum number of websocket connections allowed
   websocket_max_connections: 500

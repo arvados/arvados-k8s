@@ -27,7 +27,7 @@ EOF
 
 arv keep_service create --keep-service "$(cat <<EOF
 {
- "service_host":"8.8.8.8",
+ "service_host":"{{ .Values.externalIP }}",
  "service_port":25107,
  "service_ssl_flag":true,
  "service_type":"proxy"

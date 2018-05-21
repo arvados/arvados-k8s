@@ -30,7 +30,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "/usr/local/bin/bootstrap.sh arvados-ws=1.1.3.20180403215323* && arvados-ws"
+            - "/usr/local/bin/bootstrap.sh arvados-ws={{ .Values.arvados.versions.distribution.arvadosWs }} && arvados-ws"
           volumeMounts:
             - name: ws-configmap
               mountPath: /etc/arvados/ws/ws.yml

@@ -6,7 +6,7 @@
 
 if [[ -z $1 ]] ; then
     echo "ERROR: A floating IP must be supplied."
-    echo "Usage: $0 <floatingIP>"
+    echo "Usage: $0 <externalIP>"
     exit 1
 fi
 

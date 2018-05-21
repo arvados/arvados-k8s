@@ -30,7 +30,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "/usr/local/bin/bootstrap.sh arvados-workbench=1.1.3.20180323182125* && exec /sbin/my_init"
+            - "/usr/local/bin/bootstrap.sh arvados-workbench={{ .Values.arvados.versions.distribution.arvadosWorkbench }} && exec /sbin/my_init"
           env:
             - name: RAILS_ENV
               value: "production"

@@ -30,7 +30,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "install /init-scripts/*.sh /etc/my_init.d && /usr/local/bin/bootstrap.sh arvados-api-server=1.1.3.20180405021932* && cd /var/www/arvados-api/current && exec /sbin/my_init"
+            - "install /init-scripts/*.sh /etc/my_init.d && /usr/local/bin/bootstrap.sh arvados-api-server={{ .Values.arvados.versions.distribution.arvadosApiServer }} && cd /var/www/arvados-api/current && exec /sbin/my_init"
           env:
             - name: RAILS_ENV
               value: "production"

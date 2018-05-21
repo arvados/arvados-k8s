@@ -99,7 +99,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   type: LoadBalancer
-  loadBalancerIP: "8.8.8.8"
+  loadBalancerIP: {{ required "A valid externalIP is required!" .Values.externalIP }}
   ports:
   - name: https
     port: 9003
