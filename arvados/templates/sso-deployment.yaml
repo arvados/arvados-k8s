@@ -53,7 +53,17 @@ spec:
             - name: sso-configmap
               mountPath: /init-scripts/92-init-client.sh
               subPath: 92-init-client.sh
+            - name: ssl-configmap
+              mountPath: /etc/ssl/certs/sso.pem
+              subPath: cert
+            - name: ssl-configmap
+              mountPath: /etc/ssl/private/sso.key
+              subPath: key
+
       volumes:
         - name: sso-configmap
           configMap:
             name: arvados-sso-configmap
+        - name: ssl-configmap
+          configMap:
+            name: ssl-configmap
