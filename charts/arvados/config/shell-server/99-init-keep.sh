@@ -5,6 +5,9 @@
 
 set -e
 export HOME="/root"
+export ARVADOS_API_TOKEN={{ .Values.superUserSecret }}
+export ARVADOS_API_HOST={{ .Values.externalIP }}:444
+export ARVADOS_API_HOST_INSECURE="true"
 arv keep_service create --keep-service "$(cat <<EOF
 {
  "service_host":"arvados-keep-store-0.arvados-keep-store",
