@@ -1,0 +1,15 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+FROM ubuntu:16.04
+
+RUN echo "deb http://apt.arvados.org/ xenial-dev main" > /etc/apt/sources.list.d/apt.arvados.org-dev.list
+
+RUN apt-key adv --keyserver pool.sks-keyservers.net --recv 1078ECD7
+
+RUN apt-get update
+
+COPY bootstrap.sh /usr/local/bin/bootstrap.sh
+
+ENTRYPOINT []

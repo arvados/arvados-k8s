@@ -1,0 +1,31 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+FROM phusion/passenger-ruby23
+
+# put nginx in daemon mode again; the arvados-workbench package restarts
+# nginx, which would lead to a hang otherwise...
+RUN sed -i 's/daemon off;/#daemon off;/' /etc/nginx/nginx.conf
+
+RUN /usr/bin/apt-key adv --keyserver pool.sks-keyservers.net --recv 1078ECD7
+
+RUN echo "deb http://apt.arvados.org/ xenial-dev main" | tee /etc/apt/sources.list.d/arvados.list
+
+RUN apt-get update && apt-get install -qqy tzdata
+
+# preinstall latest arvados rails packages, so that we have (most of) the gems
+# baked into this docker image. Then remove them so that this image is generic.
+# The bundles will remain installed.
+RUN apt-get install -qqy arvados-workbench arvados-sso-server arvados-api-server
+RUN apt-get remove -qqy arvados-workbench arvados-sso-server arvados-api-server
+
+# put nginx.conf back into the state it needs to be
+RUN sed -i 's/#daemon off;/daemon off;/' /etc/nginx/nginx.conf
+
+RUN apt-get install -qqy postgresql-client
+
+RUN rm /etc/nginx/sites-enabled/default
+RUN rm /etc/service/nginx/down
+
+COPY bootstrap.sh /usr/local/bin/bootstrap.sh

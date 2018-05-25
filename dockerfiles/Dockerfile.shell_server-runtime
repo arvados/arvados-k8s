@@ -1,0 +1,31 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+FROM phusion/baseimage
+
+RUN /usr/bin/apt-key adv --keyserver pool.sks-keyservers.net --recv 1078ECD7
+
+RUN echo "deb http://apt.arvados.org/ xenial-dev main" | tee /etc/apt/sources.list.d/arvados.list
+
+RUN apt-get update && apt-get install -qqy tzdata
+
+RUN apt-get install -qqy \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common \
+    sudo
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+RUN apt-get update
+RUN apt-get install -y docker-ce
+
+RUN apt-get install -y make gcc libcurl4-openssl-dev ruby-full git
+
+COPY bootstrap.sh /usr/local/bin/bootstrap.sh
+
+ENTRYPOINT []

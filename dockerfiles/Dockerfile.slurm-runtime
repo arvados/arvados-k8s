@@ -1,0 +1,21 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+FROM cure/arvados-runtime
+
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common \
+    sudo
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+RUN apt-get update
+RUN apt-get install -y slurm-llnl munge docker-ce
+RUN mkdir /var/run/munge
+RUN chown munge /var/run/munge
