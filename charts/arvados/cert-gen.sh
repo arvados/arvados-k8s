@@ -20,7 +20,7 @@ prompt = no
 CN = arvados-test-cert
 
 [v3_req]
-keyUsage = keyEncipherment, dataEncipherment
+keyUsage = keyEncipherment, dataEncipherment, digitalSignature
 extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 
