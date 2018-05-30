@@ -13,6 +13,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   type: LoadBalancer
+  externalTrafficPolicy: Local
   loadBalancerIP: {{ required "A valid externalIP is required!" .Values.externalIP }}
   ports:
   - name: http
