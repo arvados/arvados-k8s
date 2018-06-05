@@ -306,6 +306,9 @@ common:
   # :none or :slurm_immediate
   crunch_job_wrapper: :slurm_immediate
 
+  # Disable the jobs api, in favor of the container api
+  disable_api_methods: [ jobs.create, pipeline_instances.create, pipeline_templates.create,jobs.get, pipeline_instances.get, pipeline_templates.get, jobs.list, pipeline_instances.list, pipeline_templates.list, jobs.index, pipeline_instances.index, pipeline_templates.index, jobs.update, pipeline_instances.update, pipeline_templates.update, jobs.queue, jobs.queue_size, job_tasks.create, job_tasks.get, job_tasks.list, job_tasks.index, job_tasks.update, jobs.show, pipeline_instances.show, pipeline_templates.show, jobs.show, job_tasks.show ]
+
   # username, or false = do not set uid when running jobs.
   crunch_job_user: crunch
 
