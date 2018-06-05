@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 Client:
-  APIHost: arvados-ws:443
+  APIHost: arvados-api-server:444
+  Insecure: true
 Listen: ":9003"
 Postgres:
   dbname: arvados_production
