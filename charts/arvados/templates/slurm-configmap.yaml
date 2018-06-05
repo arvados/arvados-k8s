@@ -1,0 +1,18 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: slurm-configmap
+  labels:
+    app: {{ template "arvados.name" . }}
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+{{ (tpl (.Files.Glob "config/slurm/slurm.conf").AsConfig . ) | indent 2 }}
+binaryData:
+  munge.key:
+    {{ .Files.Get "config/slurm/munge.key" | b64enc }}

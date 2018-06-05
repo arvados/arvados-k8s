@@ -9,3 +9,5 @@ charts/arvados/config/ssl/cert
 charts/arvados/config/ssl/key
 charts/arvados/templates/NOTES.txt
 charts/arvados/templates/_helpers.tpl
+charts/arvados/config/slurm/slurm.conf
+charts/arvados/config/slurm/munge.key

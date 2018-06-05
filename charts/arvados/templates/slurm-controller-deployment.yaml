@@ -1,0 +1,59 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "arvados-slurm-controller"
+  labels:
+    app: arvados-slurm-controller
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  serviceName: arvados-slurm-controller
+  selector:
+    matchLabels:
+      app: arvados-slurm-controller
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-slurm-controller
+        release: {{ .Release.Name }}
+    spec:
+      dnsConfig:
+        searches:
+          - "arvados-slurm-compute.default.svc.cluster.local"
+      containers:
+        - name: {{ .Chart.Name }}
+          hostname: arvados-slurm-controller
+          image: "cure/arvados-slurm-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && slurmctld -D"
+          env:
+            - name : ARVADOS_API_HOST
+              value: "{{ .Values.externalIP }}:444"
+            - name : ARVADOS_API_HOST_INSECURE
+              value: "true"
+            - name : ARVADOS_API_TOKEN
+              value: "{{ .Values.superUserSecret }}"
+          volumeMounts:
+            - name: slurm-configmap
+              mountPath: /etc/slurm-llnl/slurm.conf
+              subPath: slurm.conf
+            - name: slurm-configmap
+              mountPath: /etc/munge/munge.key
+              subPath: munge.key
+
+      volumes:
+        - name: slurm-configmap
+          configMap:
+            name: slurm-configmap
+            defaultMode: 0400
+

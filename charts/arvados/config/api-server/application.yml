@@ -304,7 +304,7 @@ common:
   docker_image_formats: ["v2"]
 
   # :none or :slurm_immediate
-  crunch_job_wrapper: :none
+  crunch_job_wrapper: :slurm_immediate
 
   # username, or false = do not set uid when running jobs.
   crunch_job_user: crunch

@@ -1,0 +1,62 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "arvados-crunch-dispatch-slurm"
+  labels:
+    app: arvados-crunch-dispatch-slurm
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  serviceName: arvados-crunch-dispatch-slurm
+  selector:
+    matchLabels:
+      app: arvados-crunch-dispatch-slurm
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-crunch-dispatch-slurm
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          hostname: arvados-crunch-dispatch-slurm
+          image: "cure/arvados-slurm-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && crunch-dispatch-slurm"
+          env:
+            - name : ARVADOS_API_HOST
+              value: "{{ .Values.externalIP }}:444"
+            - name : ARVADOS_API_HOST_INSECURE
+              value: "true"
+            - name : ARVADOS_API_TOKEN
+              value: "{{ .Values.superUserSecret }}"
+          volumeMounts:
+            - name: slurm-configmap
+              mountPath: /etc/slurm-llnl/slurm.conf
+              subPath: slurm.conf
+            - name: slurm-configmap
+              mountPath: /etc/munge/munge.key
+              subPath: munge.key
+            - name: crunch-dispatch-slurm-configmap
+              mountPath: /etc/arvados/crunch-dispatch-slurm/crunch-dispatch-slurm.yml
+              subPath: crunch-dispatch-slurm.yml
+
+      volumes:
+        - name: slurm-configmap
+          configMap:
+            name: slurm-configmap
+            defaultMode: 0400
+        - name: crunch-dispatch-slurm-configmap
+          configMap:
+            name: crunch-dispatch-slurm-configmap
+

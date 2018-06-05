@@ -1,0 +1,68 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "arvados-slurm-compute"
+  labels:
+    app: arvados-slurm-compute
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 4
+  serviceName: arvados-slurm-compute
+  selector:
+    matchLabels:
+      app: arvados-slurm-compute
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: arvados-slurm-compute
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          hostname: arvados-slurm-compute
+          image: "cure/arvados-slurm-runtime"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "/usr/local/bin/bootstrap.sh python-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} crunch-run={{ .Values.arvados.versions.distribution.crunchRun }} python-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && /etc/init.d/docker start && slurmd -D"
+          securityContext:
+            privileged: true
+          env:
+            - name : ARVADOS_API_HOST
+              value: "{{ .Values.externalIP }}:444"
+            - name : ARVADOS_API_HOST_INSECURE
+              value: "true"
+            - name : ARVADOS_API_TOKEN
+              value: "{{ .Values.superUserSecret }}"
+          volumeMounts:
+            - name: slurm-configmap
+              mountPath: /etc/slurm-llnl/slurm.conf
+              subPath: slurm.conf
+            - name: slurm-configmap
+              mountPath: /etc/munge/munge.key
+              subPath: munge.key
+            - name: docker-graph-storage
+              mountPath: /var/lib/docker
+
+      volumes:
+        - name: slurm-configmap
+          configMap:
+            name: slurm-configmap
+            defaultMode: 0400
+        - name: docker-graph-storage
+          emptyDir: {}
+
+#            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && chown munge /etc/munge/munge.key && chmod 0400 /etc/munge/munge.key && sudo -u munge munged && slurmctld -D && crunch-dispatch-slurm"
+#            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && sudo -u munge munged && slurmctld -D && crunch-dispatch-slurm"
+#            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && crunch-dispatch-slurm"
+
+# for slurm client, compute node
+#            - "/usr/local/bin/bootstrap.sh python-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} crunch-run={{ .Values.arvados.versions.distribution.crunchRun }} python-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && chown munge /etc/munge/munge.key; chmod 0400 /etc/munge/munge.key; sudo -u munge munged && slurmd -D"

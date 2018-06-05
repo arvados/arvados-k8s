@@ -70,7 +70,7 @@ arvados:
       arvadosWorkbench: 1.1.4.20180521175419*
       arvadosWs: 1.1.4.20180516205929*
       arvadosSSOServer: 0.1.20171122141118.ba584a7*
-      crunchDispatchSlurm: 1.1.4.20180516205929*
+      crunchDispatchSlurm: 1.1.4.20180524153119*
       crunchRun: 1.1.4.20180516205929*
       crunchRunner: 1.1.4.20180516205929*
       keepBalance: 1.1.4.20180516205929*
