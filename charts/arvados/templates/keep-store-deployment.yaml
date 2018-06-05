@@ -13,6 +13,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: 2
+  podManagementPolicy: Parallel
   serviceName: arvados-keep-store
   selector:
     matchLabels:
@@ -24,6 +25,7 @@ spec:
         app: arvados-keep-store
         release: {{ .Release.Name }}
     spec:
+      terminationGracePeriodSeconds: 1
       containers:
         - name: arvados-keep-store
           image: "cure/arvados-runtime"

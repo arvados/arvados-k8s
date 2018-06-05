@@ -27,6 +27,7 @@ spec:
       dnsConfig:
         searches:
           - "arvados-slurm-compute.default.svc.cluster.local"
+      terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
           hostname: arvados-slurm-controller

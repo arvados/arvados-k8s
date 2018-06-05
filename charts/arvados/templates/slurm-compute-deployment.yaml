@@ -13,6 +13,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: 4
+  podManagementPolicy: Parallel
   serviceName: arvados-slurm-compute
   selector:
     matchLabels:
@@ -24,6 +25,7 @@ spec:
         app: arvados-slurm-compute
         release: {{ .Release.Name }}
     spec:
+      terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
           hostname: arvados-slurm-compute
