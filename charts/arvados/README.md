@@ -5,39 +5,55 @@
 # Arvados Helm Chart
 
 This directory contains a simple Helm chart for Arvados, excluding the Git
-server and SLURM. It's more or less a port of the Kubernetes config generated
-by the Arvados Kelda blueprint.
+server. This is an initial version, there is (a lot of) room for improvement.
 
-The files should only be considered an example of what a Kubernetes deployment
-might look like -- this is my first Helm chart, and there are definitely things
-that could be cleaner.
+**WARNING**
 
-## Usage
+This Helm chart does not retain any state after it is deleted. An Arvados
+cluster spun up with this Helm Chart is entirely ephemeral.
 
-1. Boot a [GKE cluster](https://console.cloud.google.com/kubernetes/) with at least 3 nodes.
-    - I tested with 3 n1-standard-1 (1 vCPU, 3.75GB RAM) machines on Kubernetes v1.8.8.
-    - It takes a few minutes for the cluster to be initialized.
+**/WARNING**
 
-2. Reserve a [static IP](https://console.cloud.google.com/networking/addresses) in GCE.
-    - Make sure the IP is in the same region as your GKE cluster, and is of the
-      "Regional" type.
+## Usage example (GKE)
 
-3. Install `gcloud`, `kubectl`, and `helm` on your development machine.
+1. Install `gcloud`, `kubectl`, and `helm` on your development machine.
    `gcloud` is used to setup the connection to your GKE cluster. `kubectl` is
    used to interact with the Kubernetes cluster. `helm` is used to deploy to
    the cluster.
      - Follow the instructions [here](https://cloud.google.com/sdk/downloads) to install `gcloud`.
      - `gcloud components install kubectl` to install `kubectl`.
-     - `brew install kubernetes-helm` to install `helm`.
+     - Follow the instructions [here](//docs.helm.sh/using_helm/#installing-helm) to install `helm`.
      - If that doesn't work, see the official installation instructions for
        [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl)
        and [helm](https://docs.helm.sh/using_helm/#installing-helm).
 
-3. Connect to the GKE cluster.
+2. Boot a [GKE cluster](https://console.cloud.google.com/kubernetes/) with at
+   least 3 nodes, n1-standard-2 or larger.
+
+   Kubernetes 1.10 is required, because this chart uses the binaryData configmap feature.
+
+   It is also possible to boot the cluster from the command line:
+
+     gcloud container clusters create <CLUSTERNAME> --zone us-central1-a --machine-type n1-standard-2 --cluster-version 1.10.2-gke.3
+
+   It takes a few minutes for the cluster to be initialized.
+
+3. Reserve a [static IP](https://console.cloud.google.com/networking/addresses) in GCE.
+    - Make sure the IP is in the same region as your GKE cluster, and is of the
+      "Regional" type.
+
+4. Connect to the GKE cluster.
+
+   Web:
     - Click the "Connect" button next to your [GKE cluster](https://console.cloud.google.com/kubernetes/).
     - Execute the "Command-line access" command on your development machine.
+
+   Alternatively, use this command:
+    - gcloud container clusters get-credentials <CLUSTERNAME> --zone us-central1-a --project <YOUR-PROJECT>
+
+  Test:
     - Run `kubectl get nodes` to test your connection to the GKE cluster. The
-      nodes you specified in step 1 should show up in the output.
+      nodes you specified in step 2 should show up in the output.
 
 4. Install `helm` on the cluster.
     - Run the following commands from your development machine. The last three
@@ -68,20 +84,13 @@ that could be cleaner.
    5. Double click on the certificate and change the trust level to "Always
       Trust". The certificate will be named "arvados-test-cert".
 
-7. Modify the Kubernetes configs to reference your static IP.
-    - Replace all references to the IP `8.8.8.8` with the IP allocated in step 1.
-    - This can be done automatically with the following command:
-        ```
-        grep -lr --exclude README.md '8.8.8.8' . | xargs sed -i '' 's/8.8.8.8/<STATIC IP>/g'
-        ```
-8. Install the Arvados Kubernetes configs.
-    - Run `helm install --name arvados .`
+7. Install the Arvados Kubernetes configs.
+    - Run `helm install --name arvados . --set externalIP=<YOUR-OFFICIAL-IP>`
     - If you make a change to the Kubernetes manifests and want to reinstall
       the configs, run `helm delete --purge arvados`, followed by the `helm
       install` command.
 
-9. Wait for everything to boot in the cluster. This takes a few minutes from my
-   testing.
+8. Wait for everything to boot in the cluster. This takes about 5 minutes.
     - `kubectl get pods` should show all the pods as running.
     - `kubectl get services` shouldn't show anything as `<pending>`.
         - If some services are stuck in `<pending>` check their status with
@@ -91,38 +100,31 @@ that could be cleaner.
           manually delete all entries under "Forwarding rules" and "Target
           pools" in the [console UI](https://console.cloud.google.com/net-services/loadbalancing/advanced/targetPools/list).
     - Even after the containers are running, they take a couple minutes to
-      download and install various packages. If some components seem down,
+      download and install various packages. If some component seem down,
       check its logs with `kubectl logs <POD NAME>` and see if it's fully
-      initialized. In my testing, the container has been inaccessible for up to
-      10 minutes after starting.
+      initialized.
 
-10. Connect to the Workbench.
-    - Navigate to `https://<STATIC IP>` in your browser.
+10. Connect to Workbench:
+    - Navigate to `https://<STATIC IP>` in your browser. Use the username and
+      password specified in values.yaml to log in.
 
-11. Destroy the GKE cluster when finished.
+    Alternatively, use the Arvados cli tools or SDKs:
+
+    Set the environment variables properly:
+
+    ARVADOS_API_TOKEN=<superUserSecret from values.yaml>
+    ARVADOS_API_HOST=<STATIC IP>:444
+    ARVADOS_API_HOST_INSECURE=true
+
+11. Destroy the GKE cluster when finished, via the web or command line:
+    - helm del arvados --purge
+    - gcloud container clusters delete <CLUSTERNAME> --zone us-central1-a
 
 ## Future Work
 
-- The Arvados Dockerfiles need to be rebuilt so that they have the latest `apt`
-  metadata. As a workaround, some pods, such as `keep-web` are running `apt-get
-  update` when they start.
-- Set the floating IP through `./values.yaml` and have Helm handling templating
-  it, rather than manually replacing references to the IP.
-    - There may be other values worth templating, such as the number of Keep
-      containers to deploy, or the versions of the Arvados packages to install.
-- Figure out a better way of setting API tokens. It's currently hardcoded in
-  the config files, and changing it in one location will cause the other
-  references to fail.
-    ```
-    $ grep -r 'thisisnotavery' .
-    ./config/api-server/90-init-db.sh:    bundle exec script/create_superuser_token.rb thisisnotaverygoodsuperusersecretstring00000000000
-    ./config/api-server/90-init-db.sh:    bundle exec get_anonymous_user_token.rb -t thisisnotaverygoodanonymoussecretstring00000000000 || true
-    ./config/sso/90-init-db.sh:    bundle exec script/create_superuser_token.rb thisisnotaverygoodsuperusersecretstring00000000000
-    ./config/sso/90-init-db.sh:    bundle exec get_anonymous_user_token.rb -t thisisnotaverygoodanonymoussecretstring00000000000 || true
-    ./templates/keep-proxy-deployment.yaml:              value: "thisisnotaverygoodanonymoussecretstring00000000000"
-    ./templates/keep-web-deployment.yaml:              value: "thisisnotaverygoodanonymoussecretstring00000000000"
-    ./templates/shell-server-deployment.yaml:              value: "thisisnotaverygoodsuperusersecretstring00000000000"
-    ```
+- Add an option to use an external PostgreSQL database
+- Add an option to use an external Keep storage backend
+- Add Arvados Docker Cleaner to the compute nodes.
 - Figure out how to reduce redundant YAML files.
     - The Nginx SSL proxies (`./templates/keep-web-https.yaml`,
       `./templates/keep-proxy-https.yaml`, `./templates/ws-https.yaml`) are
@@ -131,7 +133,6 @@ that could be cleaner.
     - The configmap YAMLs are all basically the same.
     - This might be possible with partials (a Helm templating feature). Or in a
       different templating language such as ksonnet.
-- Add SLURM support
 - Support changing keep-store scale. Right now the scale is set to `replicas:
   2` in `templates/keep-store-deployment.yaml`. Unfortunately, increasing the scale
   isn't as simple as changing the number since the hostnames are hardcoded in
@@ -146,5 +147,3 @@ that could be cleaner.
       important if autoscaling is added.
 - Get the SSL certificate automatically using Lets Encrypt, eliminating the
   need for the self-signed certificate generated by the `cert-gen.sh` script.
-- Add SSL to SSO server
-    - It's currently being hosted on only HTTP.
