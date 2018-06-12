@@ -68,22 +68,22 @@ anonymousUserSecret: "thisisnotaverygoodanonymoussecretstring00000000000"
 arvados:
   versions:
     distribution:
-      arvadosApiServer: 1.1.4.20180521175419*
-      arvadosGitHttpd: 1.1.4.20180516205929*
-      arvadosHealth: 1.1.4.20180516205929*
-      arvadosWorkbench: 1.1.4.20180521175419*
-      arvadosWs: 1.1.4.20180516205929*
+      arvadosApiServer: 1.1.4.20180611193222*
+      arvadosGitHttpd: 1.1.4.20180605191011*
+      arvadosHealth: 1.1.4.20180605191011*
+      arvadosWorkbench: 1.1.4.20180605195657*
+      arvadosWs: 1.1.4.20180605191011*
       arvadosSSOServer: 0.1.20171122141118.ba584a7*
-      crunchDispatchSlurm: 1.1.4.20180524153119*
-      crunchRun: 1.1.4.20180516205929*
-      crunchRunner: 1.1.4.20180516205929*
-      keepBalance: 1.1.4.20180516205929*
-      keepStore: 1.1.4.20180516205929*
-      keepWeb: 1.1.4.20180516205929*
-      keepProxy: 1.1.4.20180516205929*
+      crunchDispatchSlurm: 1.1.4.20180605191011*
+      crunchRun: 1.1.4.20180605191011*
+      crunchRunner: 1.1.4.20180605191011*
+      keepBalance: 1.1.4.20180607192404*
+      keepStore: 1.1.4.20180605191011*
+      keepWeb: 1.1.4.20180605191011*
+      keepProxy: 1.1.4.20180605191011*
       libPamArvados: 1.1.4.20180404223512*
-      pythonArvadosFuse: 1.1.4.20180507184611*
-      pythonArvadosPythonClient: 1.1.4.20180510153813*
+      pythonArvadosFuse: 1.1.4.20180604132029*
+      pythonArvadosPythonClient: 1.1.4.20180607152043*
     gem:
       arvados: 1.1.4.20180412190507
       arvadosCLI: 1.1.4.20180412190507
