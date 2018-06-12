@@ -52,6 +52,10 @@ affinity: {}
 # Must be set to a valid IP address, e.g. by using --set when invoking helm
 externalIP: ~
 
+# The default e-mail address and password for the initial cluster admin user
+adminUserEmail: "test@example.com"
+adminUserPassword: "passw0rd"
+
 # A super user token
 superUserSecret: "thisisnotaverygoodsuperusersecretstring00000000000"
 # An anonymous user token
