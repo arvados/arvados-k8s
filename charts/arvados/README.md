@@ -55,7 +55,7 @@ cluster spun up with this Helm Chart is entirely ephemeral.
     - Run `kubectl get nodes` to test your connection to the GKE cluster. The
       nodes you specified in step 2 should show up in the output.
 
-4. Install `helm` on the cluster.
+5. Install `helm` on the cluster.
     - Run the following commands from your development machine. The last three
       commands are necessary since GKE clusters use RBAC for authentication, so
       the default `helm` installation doesn't have sufficient permissions to
@@ -67,10 +67,10 @@ cluster spun up with this Helm Chart is entirely ephemeral.
     - Wait until the `tiller` container's status is "Running" in `kubectl get pods --namespace kube-system`
     - Test `helm` by running `helm ls`. There shouldn't be any errors.
 
-5. Generate an SSL certificate.
+6. Generate an SSL certificate.
     - Run `./cert-gen.sh <STATIC IP>` where `<STATIC IP>` is the IP allocated in step 1.
 
-6. *Optional*: Trust the generated certificate. By default, browsers treat
+7. *Optional*: Trust the generated certificate. By default, browsers treat
    self-signed certificates as insecure. Therefore, the generated certificate
    must be manually trusted through the OS settings.  If you skip this step,
    you'll have to manually override browser SSL warnings when connecting to
@@ -84,13 +84,13 @@ cluster spun up with this Helm Chart is entirely ephemeral.
    5. Double click on the certificate and change the trust level to "Always
       Trust". The certificate will be named "arvados-test-cert".
 
-7. Install the Arvados Kubernetes configs.
+8. Install the Arvados Kubernetes configs.
     - Run `helm install --name arvados . --set externalIP=<YOUR-OFFICIAL-IP>`
     - If you make a change to the Kubernetes manifests and want to reinstall
       the configs, run `helm delete --purge arvados`, followed by the `helm
       install` command.
 
-8. Wait for everything to boot in the cluster. This takes about 5 minutes.
+9. Wait for everything to boot in the cluster. This takes about 5 minutes.
     - `kubectl get pods` should show all the pods as running.
     - `kubectl get services` shouldn't show anything as `<pending>`.
         - If some services are stuck in `<pending>` check their status with
