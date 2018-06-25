@@ -20,7 +20,7 @@ common:
   # The prefix used for all database identifiers to identify the record as
   # originating from this site.  Must be exactly 5 alphanumeric characters
   # (lowercase ASCII letters and digits).
-  uuid_prefix: vwxyz
+  uuid_prefix: {{ .Values.uuidPrefix }}
 
   # secret_token is a string of alphanumeric characters used by Rails
   # to sign session tokens. IMPORTANT: This is a site secret. It

@@ -26,6 +26,9 @@ anonymousUserSecret: "thisisnotaverygoodanonymoussecretstring00000000000"
 compute:
   nodes: 4
 
+# The cluster identifier, a 5 character alphanumeric string
+uuidPrefix: vwxyz
+
 # The package versions for this Arvados cluster. Also see
 #
 #   curl http://versions.arvados.org/v1/commit/ | jq .
