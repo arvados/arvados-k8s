@@ -22,6 +22,10 @@ superUserSecret: "thisisnotaverygoodsuperusersecretstring00000000000"
 # An anonymous user token
 anonymousUserSecret: "thisisnotaverygoodanonymoussecretstring00000000000"
 
+# The number of compute nodes to spin up
+compute:
+  nodes: 4
+
 # The package versions for this Arvados cluster. Also see
 #
 #   curl http://versions.arvados.org/v1/commit/ | jq .
