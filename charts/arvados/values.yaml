@@ -36,23 +36,23 @@ uuidPrefix: vwxyz
 arvados:
   versions:
     distribution:
-      arvadosApiServer: 1.1.4.20180611193222*
-      arvadosGitHttpd: 1.1.4.20180605191011*
-      arvadosHealth: 1.1.4.20180605191011*
-      arvadosWorkbench: 1.1.4.20180605195657*
-      arvadosWs: 1.1.4.20180605191011*
-      arvadosSSOServer: 1.1.4*
-      crunchDispatchSlurm: 1.1.4.20180605191011*
-      crunchRun: 1.1.4.20180605191011*
-      crunchRunner: 1.1.4.20180605191011*
-      keepBalance: 1.1.4.20180607192404*
-      keepStore: 1.1.4.20180605191011*
-      keepWeb: 1.1.4.20180605191011*
-      keepProxy: 1.1.4.20180605191011*
-      libPamArvados: 1.1.4.20180404223512*
-      pythonArvadosFuse: 1.1.4.20180604132029*
-      pythonArvadosPythonClient: 1.1.4.20180607152043*
+      arvadosApiServer: 1.3.0-1
+      arvadosGitHttpd: 1.3.0-1
+      arvadosHealth: 1.3.0-1
+      arvadosWorkbench: 1.3.0-1
+      arvadosWs: 1.3.0-1
+      arvadosSSOServer: 1.1.4-1
+      crunchDispatchSlurm: 1.3.0-1
+      crunchRun: 1.3.0-1
+      crunchRunner: 1.3.0-1
+      keepBalance: 1.3.0-1
+      keepStore: 1.3.0-1
+      keepWeb: 1.3.0-1
+      keepProxy: 1.3.0-1
+      libPamArvados: 1.3.0-1
+      pythonArvadosFuse: 1.3.0-1
+      pythonArvadosPythonClient: 1.3.0-1
     gem:
-      arvados: 1.1.4.20180412190507
-      arvadosCLI: 1.1.4.20180412190507
-      arvadosLoginSync: 1.1.4.20180424214444
+      arvados: 1.3.0.20181129194931
+      arvadosCLI: 1.3.0.20181129194931
+      arvadosLoginSync: 1.3.0.20181129194931
