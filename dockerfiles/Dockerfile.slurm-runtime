@@ -16,6 +16,6 @@ RUN add-apt-repository \
    $(lsb_release -cs) \
    stable"
 RUN apt-get update
-RUN apt-get install -y slurm-llnl munge docker-ce
+RUN apt-get install -y slurmd slurmctld munge docker-ce
 RUN mkdir /var/run/munge
 RUN chown munge /var/run/munge

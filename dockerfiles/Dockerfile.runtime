@@ -2,11 +2,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
-RUN echo "deb http://apt.arvados.org/ xenial-dev main" > /etc/apt/sources.list.d/apt.arvados.org-dev.list
+RUN apt-get update && apt-get install -y gnupg2
 
-RUN apt-key adv --keyserver pool.sks-keyservers.net --recv 1078ECD7
+RUN echo "deb http://apt.arvados.org/ bionic main" > /etc/apt/sources.list.d/apt.arvados.org.list
+
+ADD 1078ECD7.asc /tmp/
+RUN cat /tmp/1078ECD7.asc | apt-key add -
 
 RUN apt-get update
 

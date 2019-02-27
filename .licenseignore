@@ -11,3 +11,4 @@ charts/arvados/templates/NOTES.txt
 charts/arvados/templates/_helpers.tpl
 charts/arvados/config/slurm/slurm.conf
 charts/arvados/config/slurm/munge.key
+dockerfiles/1078ECD7.asc
