@@ -14,9 +14,9 @@ Documentation can be found at [http://doc.arvados.org/install/arvados-on-kuberne
 
 ## Community
 
-[![Join the chat at https://gitter.im/curoverse/arvados](https://badges.gitter.im/curoverse/arvados.svg)](https://gitter.im/curoverse/arvados?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/arvados/community](https://badges.gitter.im/arvados/arvados.svg)](https://gitter.im/arvados/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The [curoverse/arvados channel](https://gitter.im/curoverse/arvados)
+The [arvados/community channel](https://gitter.im/arvados/community)
 channel at [gitter.im](https://gitter.im) is available for live
 discussion and support.
 
@@ -33,9 +33,9 @@ contributors to Arvados.
 [![Build Status](https://ci.curoverse.com/buildStatus/icon?job=run-tests)](https://ci.curoverse.com/job/run-tests/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/curoverse/arvados)](https://goreportcard.com/report/github.com/curoverse/arvados)
 
-The Arvados public bug tracker is located at https://dev.arvados.org/projects/arvados/issues
+[Arvados public bug tracker](https://dev.arvados.org/projects/arvados/issues)
 
-Continuous integration is hosted at https://ci.curoverse.com/
+[Continuous integration](https://ci.arvados.org/)
 
 Instructions for setting up a development environment and working on specific
 components can be found on the
