@@ -12,8 +12,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: 1
-  serviceName: arvados-crunch-dispatch-slurm
   selector:
     matchLabels:
       app: arvados-crunch-dispatch-slurm
@@ -26,7 +24,6 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          hostname: arvados-crunch-dispatch-slurm
           image: "cure/arvados-slurm-runtime"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:

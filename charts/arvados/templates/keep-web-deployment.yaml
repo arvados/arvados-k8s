@@ -12,7 +12,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: arvados-keep-web
@@ -23,7 +22,6 @@ spec:
         app: arvados-keep-web
         release: {{ .Release.Name }}
     spec:
-      replicas: 1
       containers:
         - name: arvados-keep-web
           image: "cure/arvados-runtime"

@@ -12,7 +12,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: arvados-sso

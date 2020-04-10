@@ -28,7 +28,6 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
-          hostname: arvados-slurm-compute
           image: "cure/arvados-slurm-runtime"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
