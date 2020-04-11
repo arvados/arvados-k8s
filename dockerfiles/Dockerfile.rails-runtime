@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM phusion/passenger-ruby25
+FROM phusion/passenger-ruby23
 
 RUN apt-get update && apt-get install -y gnupg2
 
