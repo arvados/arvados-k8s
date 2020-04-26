@@ -26,6 +26,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "postgres:9.5"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: POSTGRES_HOST_AUTH_METHOD
+            value: "trust"
           volumeMounts:
             - name: postgres-configmap
               mountPath: /docker-entrypoint-initdb.d/create_dbs.sh

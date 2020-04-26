@@ -25,6 +25,9 @@ spec:
         app: arvados-slurm-compute
         release: {{ .Release.Name }}
     spec:
+      dnsConfig:
+        searches:
+          - "arvados-slurm-compute.default.svc.cluster.local"
       terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
@@ -60,10 +63,3 @@ spec:
             defaultMode: 0400
         - name: docker-graph-storage
           emptyDir: {}
-
-#            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && chown munge /etc/munge/munge.key && chmod 0400 /etc/munge/munge.key && sudo -u munge munged && slurmctld -D && crunch-dispatch-slurm"
-#            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && sudo -u munge munged && slurmctld -D && crunch-dispatch-slurm"
-#            - "/usr/local/bin/bootstrap.sh crunch-dispatch-slurm={{ .Values.arvados.versions.distribution.crunchDispatchSlurm }} && crunch-dispatch-slurm"
-
-# for slurm client, compute node
-#            - "/usr/local/bin/bootstrap.sh python-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} crunch-run={{ .Values.arvados.versions.distribution.crunchRun }} python-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && chown munge /etc/munge/munge.key; chmod 0400 /etc/munge/munge.key; sudo -u munge munged && slurmd -D"

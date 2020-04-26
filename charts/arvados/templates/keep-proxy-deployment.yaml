@@ -23,7 +23,7 @@ spec:
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: arvados-keep-proxy
+        - name: keep-proxy
           image: "cure/arvados-runtime"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
@@ -37,3 +37,30 @@ spec:
               value: "true"
             - name : ARVADOS_API_TOKEN
               value: "{{ .Values.anonymousUserSecret }}"
+          volumeMounts:
+            - name: etc-configmap
+              mountPath: /etc/arvados/config.yml
+              subPath: config.yml
+        - name: nginx
+          image: "nginx:1.17"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: nginx-configmap
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+            - name: ssl-configmap
+              mountPath: /etc/nginx/ssl.crt
+              subPath: cert
+            - name: ssl-configmap
+              mountPath: /etc/nginx/ssl.key
+              subPath: key
+      volumes:
+        - name: etc-configmap
+          configMap:
+            name: etc-configmap
+        - name: ssl-configmap
+          configMap:
+            name: ssl-configmap
+        - name: nginx-configmap
+          configMap:
+            name: arvados-keep-proxy-https-configmap

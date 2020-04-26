@@ -32,7 +32,7 @@ common:
   ###
   # If true, allow new creation of new accounts in the SSO server's internal
   # user database.
-  allow_account_registration: false
+  allow_account_registration: true
 
   # If true, send an email confirmation before activating new accounts in the
   # SSO server's internal user database.

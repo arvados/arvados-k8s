@@ -33,12 +33,13 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "mkdir /keepdata && /usr/local/bin/bootstrap.sh keepstore={{ .Values.arvados.versions.distribution.keepStore }} && GOGC=10 keepstore -enforce-permissions=true -blob-signing-key-file=/etc/keepstore/blob-signing.key -max-buffers=100 -serialize=true -never-delete=false -volume=/keepdata"
+            - "mkdir /keepdata && /usr/local/bin/bootstrap.sh keepstore={{ .Values.arvados.versions.distribution.keepStore }} && GOGC=10 keepstore"
           volumeMounts:
-            - name: keep-store-configmap
-              mountPath: /etc/keepstore/blob-signing.key
-              subPath: blob-signing.key
+            - name: etc-configmap
+              mountPath: /etc/arvados/config.yml
+              subPath: config.yml
       volumes:
-        - name: keep-store-configmap
+        - name: etc-configmap
           configMap:
-            name: arvados-keep-store-configmap
+            name: etc-configmap
+

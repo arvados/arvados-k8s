@@ -7,6 +7,7 @@ FROM ubuntu:18.04
 RUN apt-get update && apt-get install -y gnupg2 ca-certificates
 
 RUN echo "deb http://apt.arvados.org/ bionic main" > /etc/apt/sources.list.d/apt.arvados.org.list
+RUN echo "deb http://apt.arvados.org/ bionic-dev main" >> /etc/apt/sources.list.d/apt.arvados.org.list
 
 ADD 1078ECD7.asc /tmp/
 RUN cat /tmp/1078ECD7.asc | apt-key add -

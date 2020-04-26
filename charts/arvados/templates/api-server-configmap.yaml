@@ -12,4 +12,57 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-{{ (tpl (.Files.Glob "config/api-server/*").AsConfig . ) | indent 2 }}
+  {{- (tpl (.Files.Glob "config/api-server/*").AsConfig . ) | nindent 2 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arvados-api-server-https-configmap
+  labels:
+    app: {{ template "arvados.name" . }}
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  nginx.conf: |
+    upstream controller {
+      server                127.0.0.1:9004;
+    }
+
+    proxy_http_version 1.1;
+
+    # When Keep clients request a list of Keep services from the API server, the
+    # server will automatically return the list of available proxies if
+    # the request headers include X-External-Client: 1.  Following the example
+    # here, at the end of this section, add a line for each netmask that has
+    # direct access to Keep storage daemons to set this header value to 0.
+    geo $external_client {
+      default     1;
+      10.0.0.0/8  0;
+    }
+
+    server {
+      listen                444 ssl;
+      server_name           public-api;
+
+      ssl_certificate       /etc/nginx/ssl.crt;
+      ssl_certificate_key   /etc/nginx/ssl.key;
+
+      client_max_body_size  128m;
+
+      # Redirect plain HTTP requests to HTTPS.
+      error_page 497 301 =307 https://$host:$server_port$request_uri;
+
+      location / {
+        proxy_pass            http://controller;
+        proxy_connect_timeout 90s;
+        proxy_read_timeout    300s;
+        proxy_redirect        off;
+        proxy_set_header      X-Forwarded-Proto https;
+        proxy_set_header      Host $http_host;
+        proxy_set_header      X-External-Client $external_client;
+        proxy_set_header      X-Real-IP $remote_addr;
+        proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+    }

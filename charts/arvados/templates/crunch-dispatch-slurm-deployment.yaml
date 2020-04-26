@@ -22,6 +22,9 @@ spec:
         app: arvados-crunch-dispatch-slurm
         release: {{ .Release.Name }}
     spec:
+      dnsConfig:
+        searches:
+          - "arvados-slurm-compute.default.svc.cluster.local"
       containers:
         - name: {{ .Chart.Name }}
           image: "cure/arvados-slurm-runtime"
@@ -38,22 +41,21 @@ spec:
             - name : ARVADOS_API_TOKEN
               value: "{{ .Values.superUserSecret }}"
           volumeMounts:
+            - name: etc-configmap
+              mountPath: /etc/arvados/config.yml
+              subPath: config.yml
             - name: slurm-configmap
               mountPath: /etc/slurm-llnl/slurm.conf
               subPath: slurm.conf
             - name: slurm-configmap
               mountPath: /etc/munge/munge.key
               subPath: munge.key
-            - name: crunch-dispatch-slurm-configmap
-              mountPath: /etc/arvados/crunch-dispatch-slurm/crunch-dispatch-slurm.yml
-              subPath: crunch-dispatch-slurm.yml
 
       volumes:
+        - name: etc-configmap
+          configMap:
+            name: etc-configmap
         - name: slurm-configmap
           configMap:
             name: slurm-configmap
             defaultMode: 0400
-        - name: crunch-dispatch-slurm-configmap
-          configMap:
-            name: crunch-dispatch-slurm-configmap
-

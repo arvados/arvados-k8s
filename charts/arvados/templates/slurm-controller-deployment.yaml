@@ -56,4 +56,3 @@ spec:
           configMap:
             name: slurm-configmap
             defaultMode: 0400
-

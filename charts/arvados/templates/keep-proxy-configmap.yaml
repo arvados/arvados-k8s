@@ -1,0 +1,45 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: arvados-keep-proxy-https-configmap
+  labels:
+    app: {{ template "arvados.name" . }}
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  nginx.conf: |
+    upstream httpContainer {
+      server                127.0.0.1:25106;
+    }
+
+    server {
+      listen                25107 ssl;
+      server_name           arvados-keep-proxy-https;
+
+      ssl_certificate       /etc/nginx/ssl.crt;
+      ssl_certificate_key   /etc/nginx/ssl.key;
+
+      # Clients need to be able to upload blocks of data up to 64MiB in size.
+      client_body_buffer_size 64M;
+      client_max_body_size  64m;
+
+      # Redirect plain HTTP requests to HTTPS.
+      error_page 497 301 =307 https://$host:$server_port$request_uri;
+
+      location / {
+        proxy_pass            http://httpContainer;
+        proxy_connect_timeout 90s;
+        proxy_read_timeout    300s;
+        proxy_redirect        off;
+        proxy_set_header      X-Forwarded-Proto https;
+        proxy_set_header      Host $host:$server_port;
+        proxy_set_header      X-Real-IP $remote_addr;
+        proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+    }

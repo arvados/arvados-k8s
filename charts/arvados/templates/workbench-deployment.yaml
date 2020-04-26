@@ -34,6 +34,9 @@ spec:
             - name: RAILS_ENV
               value: "production"
           volumeMounts:
+            - name: etc-configmap
+              mountPath: /etc/arvados/config.yml
+              subPath: config.yml
             - name: workbench-configmap
               mountPath: /etc/arvados/workbench/application.yml
               subPath: application.yml
@@ -47,6 +50,9 @@ spec:
               mountPath: /etc/ssl/private/workbench.key
               subPath: key
       volumes:
+        - name: etc-configmap
+          configMap:
+            name: etc-configmap
         - name: workbench-configmap
           configMap:
             name: arvados-workbench-configmap

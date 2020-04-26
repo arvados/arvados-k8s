@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,8 +13,10 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  type: LoadBalancer
+  loadBalancerIP: {{ required "A valid externalIP is required!" .Values.externalIP }}
   ports:
-  - name: http
+  - name: https
     port: 25107
     targetPort: 25107
     protocol: TCP

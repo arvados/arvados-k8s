@@ -12,7 +12,11 @@ function create_user_and_database() {
       CREATE USER $user WITH CREATEDB PASSWORD '$password';
       CREATE DATABASE $database OWNER $user;
 EOSQL
+  psql -v ON_ERROR_STOP=1 "$database" --username "$POSTGRES_USER" <<-EOSQL
+      CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+EOSQL
 }
 
 create_user_and_database arvados_sso_production arvados_sso pw
 create_user_and_database arvados_production arvados pw
+

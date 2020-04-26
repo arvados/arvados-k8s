@@ -1,0 +1,98 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+Clusters:
+  {{ .Values.uuidPrefix }}:
+    SystemRootToken: wifieSh9voog8Bae0ahgeG5aechee4Ahloo0Aiw8Aeg4Eiceiy6ku9Eghipha6an
+    API:
+      RailsSessionSecretToken: changeme
+    Workbench:
+      SecretKeyBase: ooTho2Ek8ainiegiong7eiGh2te2roP6aevaigheerizahquee2shahziengoh3y
+    Collections:
+      BlobSigningKey: EiFohx9soofaifo0Fe3mizoo4Aey8ahNiepaik8daiQuohthu9ohH6Kaegu8uDoo
+      TrustAllContent: true
+    TLS:
+      Insecure: true
+    Containers:
+      Logging:
+        LogSecondsBetweenEvents: 1s
+      SLURM:
+        SbatchArgumentsList:
+          - "--workdir=/tmp"
+        Managed:
+          DNSServerConfDir: /tmp
+          DNSServerConfTemplate: /var/www/arvados-api/current/config/unbound.template
+    Login:
+      ProviderAppID: arvados-server
+      ProviderAppSecret: app_secret
+    PostgreSQL:
+      Connection:
+        dbname: arvados_production
+        host: arvados-postgres
+        password: pw
+        user: arvados
+        sslmode: disable
+    Volumes:
+      {{ .Values.uuidPrefix }}-nyw5e-1dz1sonsidjvh68:
+        AccessViaHosts:
+          http://arvados-keep-store-0.arvados-keep-store:25107:
+            ReadOnly: false
+        Driver: Directory
+        DriverParameters:
+          Root: /keepdata
+          Serialize: true
+        ReadOnly: false
+        Replication: 1
+        StorageClasses: null
+      {{ .Values.uuidPrefix }}-nyw5e-a8ft6s4nnwavrlb:
+        AccessViaHosts:
+          http://arvados-keep-store-1.arvados-keep-store:25107:
+            ReadOnly: false
+        Driver: Directory
+        DriverParameters:
+          Root: /keepdata
+          Serialize: true
+        ReadOnly: false
+        Replication: 1
+        StorageClasses: null
+    Services:
+      Controller:
+        ExternalURL: https://{{ .Values.externalIP }}:444
+        InternalURLs:
+          "http://0.0.0.0:9004": {}
+      RailsAPI:
+        ExternalURL: "-"
+        InternalURLs:
+          "http://localhost:8000": {}
+      GitHTTP:
+        ExternalURL: https://git.{{ .Values.uuidPrefix }}.arvadosapi.com/
+      GitSSH:
+        ExternalURL: ssh://git.{{ .Values.uuidPrefix }}.arvadosapi.com
+      Keepproxy:
+        ExternalURL: "https://{{ .Values.externalIP }}:25107"
+        InternalURLs:
+          "http://localhost:25106": {}
+      Keepstore:
+        ExternalURL: '-'
+        InternalURLs:
+          http://arvados-keep-store-0.arvados-keep-store:25107: {}
+          http://arvados-keep-store-1.arvados-keep-store:25107: {}
+      SSO:
+        ExternalURL: https://{{ .Values.externalIP }}:3002
+      WebDAV:
+        ExternalURL: https://{{ .Values.externalIP }}:9002
+        InternalURLs:
+          "http://localhost:29002": {}
+      Websocket:
+        ExternalURL: wss://{{ .Values.externalIP }}:9003/websocket
+        InternalURLs:
+          "http://localhost:29003": {}
+      Workbench1:
+        ExternalURL: https://{{ .Values.externalIP }}
+    TLS:
+      Insecure: true
+    Users:
+      AutoAdminFirstUser: true
+      AutoSetupNewUsers: true
+      NewUsersAreActive: true

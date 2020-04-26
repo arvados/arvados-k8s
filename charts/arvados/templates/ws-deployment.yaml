@@ -31,10 +31,29 @@ spec:
             - "-c"
             - "/usr/local/bin/bootstrap.sh arvados-ws={{ .Values.arvados.versions.distribution.arvadosWs }} && arvados-ws"
           volumeMounts:
-            - name: ws-configmap
-              mountPath: /etc/arvados/ws/ws.yml
-              subPath: ws.yml
+            - name: etc-configmap
+              mountPath: /etc/arvados/config.yml
+              subPath: config.yml
+        - name: arvados-ws-https
+          image: "nginx:1.17"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: nginx-configmap
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+            - name: ssl-configmap
+              mountPath: /etc/nginx/ssl.crt
+              subPath: cert
+            - name: ssl-configmap
+              mountPath: /etc/nginx/ssl.key
+              subPath: key
       volumes:
-        - name: ws-configmap
+        - name: etc-configmap
           configMap:
-            name: arvados-ws-configmap
+            name: etc-configmap
+        - name: ssl-configmap
+          configMap:
+            name: ssl-configmap
+        - name: nginx-configmap
+          configMap:
+            name: arvados-ws-https-configmap
