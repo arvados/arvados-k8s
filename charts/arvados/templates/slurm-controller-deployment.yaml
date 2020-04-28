@@ -35,7 +35,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && slurmctld -D"
+            - "apt-get -qqy install ed && echo ',s/google.internal/google.internal arvados-slurm-compute.default.svc.cluster.local/g; w' | tr \\; '\\012' | ed -s /etc/resolv.conf && mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && slurmctld -D"
           env:
             - name : ARVADOS_API_HOST
               value: "{{ .Values.externalIP }}:444"
