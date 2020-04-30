@@ -15,9 +15,13 @@ spec:
   type: LoadBalancer
   loadBalancerIP: {{ required "A valid externalIP is required!" .Values.externalIP }}
   ports:
-  - name: http
+  - name: wb2
     port: 443
     targetPort: 443
+    protocol: TCP
+  - name: wb
+    port: 445
+    targetPort: 445
     protocol: TCP
   selector:
     app: arvados-workbench

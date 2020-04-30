@@ -89,6 +89,8 @@ Clusters:
         InternalURLs:
           "http://localhost:29003": {}
       Workbench1:
+        ExternalURL: https://{{ .Values.externalIP }}:445
+      Workbench2:
         ExternalURL: https://{{ .Values.externalIP }}
     TLS:
       Insecure: true
