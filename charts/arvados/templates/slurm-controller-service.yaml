@@ -16,4 +16,4 @@ spec:
   - port: 6817
     protocol: TCP
   selector:
-    app: arvados-slurm-controller-0
+    app: arvados-slurm-controller
