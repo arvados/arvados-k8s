@@ -5,6 +5,7 @@
 Clusters:
   {{ .Values.uuidPrefix }}:
     SystemRootToken: wifieSh9voog8Bae0ahgeG5aechee4Ahloo0Aiw8Aeg4Eiceiy6ku9Eghipha6an
+    ManagementToken: IeR3ahch3aehu1ahbiVoogio4jaeshashae5ienil2le2eequa6Ootho9yee2xua
     API:
       RailsSessionSecretToken: changeme
     Workbench:
