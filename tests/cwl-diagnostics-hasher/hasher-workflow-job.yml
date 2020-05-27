@@ -1,0 +1,6 @@
+inputfile:
+  class: File
+  path: keep:49c5e65830378703643f5d8cbe424567+87/4xphq-8i9sb-fmwod1qn74cemdp.log.txt
+hasher1_outputname: hasher1.md5sum.txt
+hasher2_outputname: hasher2.md5sum.txt
+hasher3_outputname: hasher3.md5sum.txt
