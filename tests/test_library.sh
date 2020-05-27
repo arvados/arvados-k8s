@@ -78,11 +78,19 @@ startCluster() {
 
 awaitHealthOK() {
   echo "Waiting for cluster health OK..."
-  while [ $ready -ne 1 ]; do
+  # Wait for up to 15 minutes for a healthy Arvados cluster.
+  counter=450
+  while [[ $ready -ne 1 ]] && [[ $counter -gt 0 ]]; do
     testReady
     kubectlStatus
     sleep 2
+    (( counter = counter-1 )) || true
   done
+  if [[ $ready -ne 1 ]]; then
+    echo "Timed out waiting for cluster health OK. Shutting down cluster..."
+    stopCluster
+    exit 1
+  fi
 }
 
 run() {
