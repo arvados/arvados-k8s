@@ -12,6 +12,10 @@ metadata:
     chart: {{ template "arvados.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.loadBalancer.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   type: LoadBalancer
   loadBalancerIP: {{ required "A valid externalIP is required!" .Values.externalIP }}
