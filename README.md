@@ -30,8 +30,7 @@ contributors to Arvados.
 
 ## Development
 
-[![Build Status](https://ci.curoverse.com/buildStatus/icon?job=run-tests)](https://ci.curoverse.com/job/run-tests/)
-[![Go Report Card](https://goreportcard.com/badge/github.com/curoverse/arvados)](https://goreportcard.com/report/github.com/curoverse/arvados)
+[![Build Status](https://ci.arvados.org/buildStatus/icon?job=run-tests)](https://ci.arvados.org/job/run-tests/)
 
 [Arvados public bug tracker](https://dev.arvados.org/projects/arvados/issues)
 
