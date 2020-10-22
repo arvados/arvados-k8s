@@ -58,3 +58,8 @@ arvados:
       arvados: 2.0.2
       arvadosCLI: 2.0.2
       arvadosLoginSync: 2.0.2
+
+# A custom bundle of CA certificates to use.
+# Useful for corporate networks with TLS proxies.
+# Set it by using the --set-file Helm argument.
+customCABundle: ""

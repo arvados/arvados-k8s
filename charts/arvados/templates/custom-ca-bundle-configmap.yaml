@@ -1,0 +1,16 @@
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-ca-bundle-configmap
+  labels:
+    app: {{ template "arvados.name" . }}
+    chart: {{ template "arvados.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  custom-ca-bundle.pem: |
+{{ .Values.customCABundle | indent 4 }}
