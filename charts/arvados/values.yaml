@@ -13,6 +13,17 @@ image:
 # Must be set to a valid IP address, e.g. by using --set when invoking helm
 externalIP: ~
 
+loadBalancer:
+  # Annotations to add to all LoadBalancer Services.
+  # This is required for MetalLB, since the same externalIP is reused for all
+  # services, and sharing is disabled by default.
+  # metallb.universe.tf/allow-shared-ip: arbitrary-sharing-key
+  annotations:
+
+  # externalTrafficPolicy for the api-server-service
+  # Set to Cluster if using MetalLB, otherwise an externalIP won't be allocated
+  apiServerExternalTrafficPolicy: Local
+
 # The default e-mail address and password for the initial cluster admin user
 adminUserEmail: "test@example.com"
 adminUserPassword: "passw0rd"
@@ -58,3 +69,8 @@ arvados:
       arvados: 2.0.2
       arvadosCLI: 2.0.2
       arvadosLoginSync: 2.0.2
+
+# A custom bundle of CA certificates to use.
+# Useful for corporate networks with TLS proxies.
+# Set it by using the --set-file Helm argument.
+customCABundle: ""

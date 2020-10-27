@@ -49,6 +49,11 @@ spec:
             - name: ssl-configmap
               mountPath: /etc/ssl/private/workbench.key
               subPath: key
+            {{- if .Values.customCABundle }}
+            - name: custom-ca-bundle-volume
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+              subPath: custom-ca-bundle.pem
+            {{- end }}
       volumes:
         - name: etc-configmap
           configMap:
@@ -59,3 +64,9 @@ spec:
         - name: ssl-configmap
           configMap:
             name: ssl-configmap
+        {{- if .Values.customCABundle }}
+        - name: custom-ca-bundle-volume
+          configMap:
+            name: custom-ca-bundle-configmap
+        {{- end }}
+
