@@ -13,6 +13,14 @@ image:
 # Must be set to a valid IP address, e.g. by using --set when invoking helm
 externalIP: ~
 
+# A list of CIDRs that have direct access to the Keep store service. All other
+# IP addresses will use the Keep proxy.
+# If hosts outside your cluster are in the default range (10.0.0.0/8), change
+# this to the exact CIDR of your cluster.
+# If using MetaLB with apiServerExternalTrafficPolicy set to Cluster, set this
+# to an empty list, since the source IP will be obscured.
+internalIPs: [10.0.0.0/8]
+
 loadBalancer:
   # Annotations to add to all LoadBalancer Services.
   # This is required for MetalLB, since the same externalIP is reused for all

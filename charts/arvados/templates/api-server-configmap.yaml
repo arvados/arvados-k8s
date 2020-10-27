@@ -43,7 +43,9 @@ data:
     # direct access to Keep storage daemons to set this header value to 0.
     geo $external_client {
       default     1;
-      10.0.0.0/8  0;
+      {{- range .Values.internalIPs }}
+      {{ . }} 0;
+      {{- end }}
     }
 
     server {
