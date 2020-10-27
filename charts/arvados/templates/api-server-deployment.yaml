@@ -49,6 +49,11 @@ spec:
             - name: api-server-configmap
               mountPath: /etc/nginx/sites-enabled/api-server.conf
               subPath: nginx.conf
+            {{- if .Values.customCABundle }}
+            - name: custom-ca-bundle-volume
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+              subPath: custom-ca-bundle.pem
+            {{- end }}
         - name: arvados-controller
           image: "cure/arvados-runtime"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -86,3 +91,8 @@ spec:
         - name: nginx-configmap
           configMap:
             name: arvados-api-server-https-configmap
+        {{- if .Values.customCABundle }}
+        - name: custom-ca-bundle-volume
+          configMap:
+            name: custom-ca-bundle-configmap
+        {{- end }}
