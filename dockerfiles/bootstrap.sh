@@ -33,11 +33,11 @@ if [[ "$RESET_NGINX_DAEMON_FLAG" == true ]]; then
 fi
 
 if [[ "$debs" != "" ]]; then
-  apt-get -qqy install $debs
+  apt-get -qqy --allow-downgrades install $debs
   if [[ "$?" != "0" ]]; then
     # Maybe we need to update the apt cache first?
     apt-get update
-    apt-get -qqy install $debs
+    apt-get -qqy --allow-downgrades install $debs
   fi
 fi
 

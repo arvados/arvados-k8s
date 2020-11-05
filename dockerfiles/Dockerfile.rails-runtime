@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -qqy tzdata
 # baked into this docker image. Then remove them so that this image is generic.
 # The bundles will remain installed.
 RUN apt-get install -qqy arvados-workbench arvados-sso-server arvados-api-server
-RUN apt-get remove -qqy arvados-workbench arvados-sso-server arvados-api-server
+RUN apt-get remove -qqy arvados-workbench arvados-sso-server arvados-api-server arvados-server
 
 # put nginx.conf back into the state it needs to be
 RUN sed -i 's/#daemon off;/daemon off;/' /etc/nginx/nginx.conf
