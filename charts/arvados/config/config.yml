@@ -25,8 +25,12 @@ Clusters:
           DNSServerConfDir: /tmp
           DNSServerConfTemplate: /var/www/arvados-api/current/config/unbound.template
     Login:
-      ProviderAppID: arvados-server
-      ProviderAppSecret: app_secret
+      Test:
+        Enable: true
+        Users:
+          admin:
+            Email: {{ .Values.adminUserEmail }}
+            Password: {{ .Values.adminUserPassword }}
     PostgreSQL:
       Connection:
         dbname: arvados_production
@@ -79,8 +83,6 @@ Clusters:
         InternalURLs:
           http://arvados-keep-store-0.arvados-keep-store:25107: {}
           http://arvados-keep-store-1.arvados-keep-store:25107: {}
-      SSO:
-        ExternalURL: https://{{ .Values.externalIP }}:3002
       WebDAV:
         ExternalURL: https://{{ .Values.externalIP }}:9002
         InternalURLs:
@@ -99,3 +101,4 @@ Clusters:
       AutoAdminFirstUser: true
       AutoSetupNewUsers: true
       NewUsersAreActive: true
+      AnonymousUserToken: {{ .Values.anonymousUserSecret }}

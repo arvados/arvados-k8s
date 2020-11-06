@@ -22,6 +22,8 @@ prepare_database() {
   if [[ -f "/create-workbench-api-client.rb" ]]; then
     # This is the API server
     cd /var/www/arvados-api/current
+    # The script/rails command in the Arvados 2.1.0 release has an incorrect require path.
+    sed -i 's|rails/commands/server|rails/command|' script/rails
     bundle exec script/create_superuser_token.rb {{ .Values.superUserSecret }}
     cd script
     bundle exec get_anonymous_user_token.rb -t {{ .Values.anonymousUserSecret }} || true

@@ -17,6 +17,5 @@ EOSQL
 EOSQL
 }
 
-create_user_and_database arvados_sso_production arvados_sso pw
 create_user_and_database arvados_production arvados pw
 

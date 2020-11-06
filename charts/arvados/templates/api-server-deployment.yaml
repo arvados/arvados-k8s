@@ -37,9 +37,6 @@ spec:
             - name: api-server-configmap
               mountPath: /init-scripts/90-init-db.sh
               subPath: 90-init-db.sh
-            - name: api-server-configmap
-              mountPath: /etc/arvados/api/database.yml
-              subPath: database.yml
             - name: etc-configmap
               mountPath: /etc/arvados/config.yml
               subPath: config.yml

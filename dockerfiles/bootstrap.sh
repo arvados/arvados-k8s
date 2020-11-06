@@ -9,7 +9,7 @@ if [[ "$1" == "" ]]; then
   exit 1
 fi
 
-if [[ "$@" =~ "arvados-workbench=" ]] || [[ "$@" =~ "arvados-sso-server=" ]] || [[ "$@" =~ "arvados-api-server=" ]]; then
+if [[ "$@" =~ "arvados-workbench=" ]] || [[ "$@" =~ "arvados-api-server=" ]]; then
   RESET_NGINX_DAEMON_FLAG=true
 else
   RESET_NGINX_DAEMON_FLAG=false

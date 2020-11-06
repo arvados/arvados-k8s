@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-FROM phusion/passenger-ruby23
+FROM phusion/passenger-ruby25
 
 RUN apt-get update && apt-get install -y gnupg2
 
@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -qqy tzdata
 # preinstall latest arvados rails packages, so that we have (most of) the gems
 # baked into this docker image. Then remove them so that this image is generic.
 # The bundles will remain installed.
-RUN apt-get install -qqy arvados-workbench arvados-sso-server arvados-api-server
-RUN apt-get remove -qqy arvados-workbench arvados-sso-server arvados-api-server arvados-server
+RUN apt-get install -qqy arvados-workbench arvados-api-server
+RUN apt-get remove -qqy arvados-workbench arvados-api-server arvados-server
 
 # put nginx.conf back into the state it needs to be
 RUN sed -i 's/#daemon off;/daemon off;/' /etc/nginx/nginx.conf
