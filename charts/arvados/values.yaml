@@ -47,27 +47,27 @@ uuidPrefix: vwxyz
 arvados:
   versions:
     distribution:
-      arvadosApiServer: 2.1.0-1
-      arvadosController: 2.1.0-1
-      arvadosGitHttpd: 2.1.0-1
-      arvadosHealth: 2.1.0-1
-      arvadosWorkbench: 2.1.0-1
-      arvadosWorkbench2: 2.1.0-1
-      arvadosWs: 2.1.0-1
-      crunchDispatchSlurm: 2.1.0-1
-      crunchRun: 2.1.0-1
-      crunchRunner: 2.1.0-1
-      keepBalance: 2.1.0-1
-      keepStore: 2.1.0-1
-      keepWeb: 2.1.0-1
-      keepProxy: 2.1.0-1
-      libPamArvados: 2.1.0-1
-      pythonArvadosFuse: 2.1.0-1
-      pythonArvadosPythonClient: 2.1.0-1
+      arvadosApiServer: 2.1.1-1
+      arvadosController: 2.1.1-1
+      arvadosGitHttpd: 2.1.1-1
+      arvadosHealth: 2.1.1-1
+      arvadosWorkbench: 2.1.1-1
+      arvadosWorkbench2: 2.1.1-1
+      arvadosWs: 2.1.1-1
+      crunchDispatchSlurm: 2.1.1-1
+      crunchRun: 2.1.1-1
+      crunchRunner: 2.1.1-1
+      keepBalance: 2.1.1-1
+      keepStore: 2.1.1-1
+      keepWeb: 2.1.1-1
+      keepProxy: 2.1.1-1
+      libPamArvados: 2.1.1-1
+      pythonArvadosFuse: 2.1.1-1
+      pythonArvadosPythonClient: 2.1.1-1
     gem:
-      arvados: 2.1.0
-      arvadosCLI: 2.1.0
-      arvadosLoginSync: 2.1.0
+      arvados: 2.1.1
+      arvadosCLI: 2.1.1
+      arvadosLoginSync: 2.1.1
 
 # A custom bundle of CA certificates to use.
 # Useful for corporate networks with TLS proxies.
