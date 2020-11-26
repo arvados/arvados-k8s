@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: "arvados-postgres"
   labels:
@@ -12,6 +12,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  replicas: 1
+  podManagementPolicy: Parallel
+  serviceName: arvados-postgres
   selector:
     matchLabels:
       app: arvados-postgres
@@ -22,6 +25,7 @@ spec:
         app: arvados-postgres
         release: {{ .Release.Name }}
     spec:
+      terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
           image: "postgres:9.5"
@@ -46,3 +50,15 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Release.Name }}-postgres-pvc
         {{- end }}
+  {{- if .Values.postgres.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+      spec:
+        storageClassName: {{ .Values.postgres.persistence.storageClass }}
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.postgres.persistence.size }}
+  {{- end }}
