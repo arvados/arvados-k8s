@@ -77,6 +77,18 @@ arvados:
       arvadosCLI: 2.1.0
       arvadosLoginSync: 2.1.0
 
+postgres:
+  persistence:
+    enabled: true
+    storageClass: ~
+    size: 8Gi
+
+keep:
+  persistence:
+    enabled: true
+    storageClass: ~
+    size: 64Gi
+
 # A custom bundle of CA certificates to use.
 # Useful for corporate networks with TLS proxies.
 # Set it by using the --set-file Helm argument.
