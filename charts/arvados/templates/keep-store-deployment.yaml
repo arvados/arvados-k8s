@@ -38,8 +38,23 @@ spec:
             - name: etc-configmap
               mountPath: /etc/arvados/config.yml
               subPath: config.yml
+            {{- if .Values.keep.persistence.enabled }}
+            - name: keep-store-storage
+              mountPath: /keepdata
+            {{- end }}
       volumes:
         - name: etc-configmap
           configMap:
             name: etc-configmap
-
+  {{- if .Values.keep.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: keep-store-storage
+      spec:
+        storageClassName: {{ .Values.keep.persistence.storageClass }}
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.keep.persistence.size }}
+  {{- end }}

@@ -27,7 +27,7 @@ spec:
     spec:
       dnsConfig:
         searches:
-          - "arvados-slurm-compute.default.svc.cluster.local"
+          - "arvados-slurm-compute.{{ .Release.Namespace }}.svc.cluster.local"
       terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
