@@ -6,8 +6,6 @@ Clusters:
   {{ .Values.uuidPrefix }}:
     SystemRootToken: wifieSh9voog8Bae0ahgeG5aechee4Ahloo0Aiw8Aeg4Eiceiy6ku9Eghipha6an
     ManagementToken: IeR3ahch3aehu1ahbiVoogio4jaeshashae5ienil2le2eequa6Ootho9yee2xua
-    API:
-      RailsSessionSecretToken: changeme
     Workbench:
       SecretKeyBase: ooTho2Ek8ainiegiong7eiGh2te2roP6aevaigheerizahquee2shahziengoh3y
     Collections:
@@ -84,9 +82,11 @@ Clusters:
           http://arvados-keep-store-0.arvados-keep-store:25107: {}
           http://arvados-keep-store-1.arvados-keep-store:25107: {}
       WebDAV:
-        ExternalURL: https://{{ .Values.externalIP }}:9002
+        ExternalURL: https://{{ .Values.externalIP }}:9002/
         InternalURLs:
           "http://localhost:29002": {}
+      WebDAVDownload:
+        ExternalURL: https://{{ .Values.externalIP }}:9002
       Websocket:
         ExternalURL: wss://{{ .Values.externalIP }}:9003/websocket
         InternalURLs:

@@ -13,7 +13,7 @@ RUN sed -i 's/daemon off;/#daemon off;/' /etc/nginx/nginx.conf
 ADD 1078ECD7.asc /tmp/
 RUN cat /tmp/1078ECD7.asc | apt-key add -
 
-RUN echo "deb http://apt.arvados.org/bionic bionic main" > /etc/apt/sources.list.d/apt.arvados.org.list
+RUN echo "deb http://apt.arvados.org/focal focal main" > /etc/apt/sources.list.d/apt.arvados.org.list
 
 RUN apt-get update && apt-get install -qqy tzdata
 
