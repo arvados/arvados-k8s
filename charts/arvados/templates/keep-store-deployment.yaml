@@ -33,7 +33,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "mkdir /keepdata && /usr/local/bin/bootstrap.sh keepstore={{ .Values.arvados.versions.distribution.keepStore }} && GOGC=10 keepstore"
+            - "mkdir /keepdata; ls /keepdata && /usr/local/bin/bootstrap.sh keepstore={{ .Values.arvados.versions.distribution.keepStore }} && GOGC=10 keepstore"
           volumeMounts:
             - name: etc-configmap
               mountPath: /etc/arvados/config.yml
