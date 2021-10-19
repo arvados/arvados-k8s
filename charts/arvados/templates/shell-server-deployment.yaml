@@ -29,7 +29,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "/usr/local/bin/bootstrap.sh python-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} gem:arvados-cli={{ .Values.arvados.versions.gem.arvadosCLI }} gem:arvados-login-sync={{ .Values.arvados.versions.gem.arvadosLoginSync }} crunchrunner={{ .Values.arvados.versions.distribution.crunchRunner }} python-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && install /init-scripts-staging/* /etc/my_init.d && /sbin/my_init"
+            - "/usr/local/bin/bootstrap.sh python3-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} gem:arvados-cli={{ .Values.arvados.versions.gem.arvadosCLI }} gem:arvados-login-sync={{ .Values.arvados.versions.gem.arvadosLoginSync }} python3-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && install /init-scripts-staging/* /etc/my_init.d && /sbin/my_init"
           env:
             - name: RAILS_ENV
               value: "production"

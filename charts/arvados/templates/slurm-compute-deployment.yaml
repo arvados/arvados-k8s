@@ -36,7 +36,7 @@ spec:
           command:
             - "sh"
             - "-c"
-            - "/usr/local/bin/bootstrap.sh python-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} crunch-run={{ .Values.arvados.versions.distribution.crunchRun }} python-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && /etc/init.d/docker start && slurmd -D"
+            - "/usr/local/bin/bootstrap.sh python3-arvados-python-client={{ .Values.arvados.versions.distribution.pythonArvadosPythonClient }} crunch-run={{ .Values.arvados.versions.distribution.crunchRun }} python3-arvados-fuse={{ .Values.arvados.versions.distribution.pythonArvadosFuse }} && mkdir /munge && cp -p /etc/munge/munge.key /munge && chown munge:munge /munge/munge.key && mkdir /var/slurm && chmod 700 /var/slurm && sudo -u munge munged --key-file=/munge/munge.key && /etc/init.d/docker start && slurmd -D"
           securityContext:
             privileged: true
           env:
