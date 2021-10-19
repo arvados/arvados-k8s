@@ -28,7 +28,7 @@ spec:
       terminationGracePeriodSeconds: 1
       containers:
         - name: {{ .Chart.Name }}
-          image: "postgres:9.5"
+          image: "postgres:10"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: POSTGRES_HOST_AUTH_METHOD
@@ -39,7 +39,7 @@ spec:
               subPath: create_dbs.sh
             {{- if .Values.postgres.persistence.enabled }}
             - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql
             {{- end }}
       volumes:
         - name: postgres-configmap
