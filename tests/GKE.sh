@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Copyright (C) The Arvados Authors. All rights reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set -e
 
 DEBUG=$1
@@ -32,7 +36,7 @@ startK8s() {
   CLUSTER=`gcloud container clusters describe arvados --zone us-central1-a 2>/dev/null`
   set -e
   if [[ -z "$CLUSTER" ]]; then
-    gcloud container clusters create arvados --zone us-central1-a --machine-type n1-standard-2 --cluster-version 1.15
+    gcloud container clusters create arvados --zone us-central1-a --machine-type n1-standard-2
   fi
 
   set +e
