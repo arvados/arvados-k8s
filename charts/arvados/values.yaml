@@ -55,27 +55,27 @@ uuidPrefix: vwxyz
 arvados:
   versions:
     distribution:
-      arvadosApiServer: 2.2.1-1
-      arvadosController: 2.2.1-1
-      arvadosGitHttpd: 2.2.1-1
-      arvadosHealth: 2.2.1-1
-      arvadosWorkbench: 2.2.1-1
-      arvadosWorkbench2: 2.2.1-1
-      arvadosWs: 2.2.1-1
-      crunchDispatchSlurm: 2.2.1-1
-      crunchRun: 2.2.1-1
-      crunchRunner: 2.2.1-1
-      keepBalance: 2.2.1-1
-      keepStore: 2.2.1-1
-      keepWeb: 2.2.1-1
-      keepProxy: 2.2.1-1
-      libPamArvados: 2.2.1-1
-      pythonArvadosFuse: 2.2.1-1
-      pythonArvadosPythonClient: 2.2.1-1
+      arvadosApiServer: 2.3.2-1
+      arvadosController: 2.3.2-1
+      arvadosGitHttpd: 2.3.2-1
+      arvadosHealth: 2.3.2-1
+      arvadosWorkbench: 2.3.2-1
+      arvadosWorkbench2: 2.3.2-1
+      arvadosWs: 2.3.2-1
+      crunchDispatchSlurm: 2.3.2-1
+      crunchRun: 2.3.2-1
+      crunchRunner: 2.3.2-1
+      keepBalance: 2.3.2-1
+      keepStore: 2.3.2-1
+      keepWeb: 2.3.2-1
+      keepProxy: 2.3.2-1
+      libPamArvados: 2.3.2-1
+      pythonArvadosFuse: 2.3.2-1
+      pythonArvadosPythonClient: 2.3.2-1
     gem:
-      arvados: 2.2.1
-      arvadosCLI: 2.2.1
-      arvadosLoginSync: 2.2.1
+      arvados: 2.3.2
+      arvadosCLI: 2.3.2
+      arvadosLoginSync: 2.3.2
 
 postgres:
   persistence:
